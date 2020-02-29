@@ -3,6 +3,7 @@ package time.processing;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.configuration.RestOptions;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.configuration.ConfigConstants;
@@ -12,6 +13,8 @@ import org.apache.flink.streaming.api.functions.windowing.AllWindowFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,15 +26,16 @@ import java.util.Date;
  */
 public class ProcessingTimeWindow {
 
-    public static void main(String[] args) throws Exception{
+    private static Logger  logger = LoggerFactory.getLogger(ProcessingTimeWindow.class);
 
+    public static void main(String[] args) throws Exception{
 
         /**
          * 设置env参数
          * local模式启用web UI
          */
         Configuration config = new Configuration();
-        config.setInteger(ConfigOptions.key("rest.port").defaultValue(8081),8082);
+        config.setInteger(RestOptions.PORT,8883);
         config.setBoolean(ConfigConstants.LOCAL_START_WEBSERVER, true);
 
 
@@ -41,7 +45,9 @@ public class ProcessingTimeWindow {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(config);
 
 
-        DataStream<String> source = env.socketTextStream("localhost",9999);
+        env.setParallelism(1);
+
+        DataStream<String> source = env.socketTextStream("localhost",9888);
 
 
         DataStream<Tuple2<String,Long>> flat = source
