@@ -7,7 +7,6 @@ import org.apache.flink.configuration.RestOptions;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.configuration.ConfigConstants;
-import org.apache.flink.configuration.ConfigOptions;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.windowing.AllWindowFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -15,14 +14,13 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * @author : viktor
  * Date  : 2019/11/12 10:45 AM
- * 功能  :
+ * 功能  : processing Time学习
  */
 public class ProcessingTimeWindow {
 
@@ -38,13 +36,7 @@ public class ProcessingTimeWindow {
         config.setInteger(RestOptions.PORT,8883);
         config.setBoolean(ConfigConstants.LOCAL_START_WEBSERVER, true);
 
-
-        /**
-         * 获取flink stream运行环境
-         */
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(config);
-
-
         env.setParallelism(1);
 
         DataStream<String> source = env.socketTextStream("localhost",9888);
@@ -85,6 +77,6 @@ public class ProcessingTimeWindow {
 
 
 
-        env.execute("processing time test");
+        env.execute("processing time");
     }
 }
