@@ -124,6 +124,7 @@ public class LatenessWindowA {
                             );
 
                             out.collect(result);
+
                         }
                     }
             ).print();
